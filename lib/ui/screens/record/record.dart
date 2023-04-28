@@ -7,9 +7,14 @@ class Record extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[MonthWidget()
+          children: <Widget>[
+            // 收入支出 选择按钮
+
+            // 月份日期选择器
+            MonthWidget()
           ],
-        );}
+        );
+  }
 }
