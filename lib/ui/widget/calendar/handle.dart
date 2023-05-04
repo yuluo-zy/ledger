@@ -10,32 +10,32 @@ Widget defaultBuildWeekHead(BuildContext context, int week,
   switch (week) {
     case 1:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xd9000000)));
+          style: const TextStyle(fontSize: 16, color: Color(0xd9000000)));
     case 2:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xd9000000)));
+          style: const TextStyle(fontSize: 16, color: Color(0xd9000000)));
     case 3:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xd9000000)));
+          style: const TextStyle(fontSize: 16, color: Color(0xd9000000)));
     case 4:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xd9000000)));
+          style: const TextStyle(fontSize: 16, color: Color(0xd9000000)));
     case 5:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xd9000000)));
+          style: const TextStyle(fontSize: 16, color: Color(0xd9000000)));
     case 6:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xffFF4081)));
+          style: const TextStyle(fontSize: 16, color: Color(0xffFF4081)));
     case 0:
       return Text(i18nObjInLocal(localeType)['weekShort'][week],
-          style: TextStyle(fontSize: 16, color: Color(0xffFF4081)));
+          style: const TextStyle(fontSize: 16, color: Color(0xffFF4081)));
   }
   return Container();
 }
 
 /// 默认构建标记
 Widget defaultBuildMark<T>({BuildContext? context, DateDay? day, T? data}) {
-  return Positioned(
+  return const Positioned(
     bottom: 0,
     left: 0,
     right: 0,
@@ -48,7 +48,7 @@ Widget defaultBuildMark<T>({BuildContext? context, DateDay? day, T? data}) {
 /// 默认构建月视图背景
 Widget defaultBuildMonthBackground(BuildContext context, DateMonth month) {
   return Text("${month.month}",
-      style: TextStyle(fontSize: 200, color: Color(0x0b000000)));
+      style: const TextStyle(fontSize: 200, color: Color(0x0b000000)));
 }
 
 /// 默认构建月视图头部
@@ -56,7 +56,7 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
     {VoidCallback? onLast, VoidCallback? onNext, VoidCallback? onClear}) {
   return Stack(children: [
     Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,14 +64,14 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
           onLast == null
               ? Container()
               : IconButton(
-                  icon: Icon(Icons.chevron_left, color: Color(0x73000000)),
+                  icon: const Icon(Icons.chevron_left, color: Color(0x73000000)),
                   onPressed: onLast),
           Text(month.toString(yearSuffix: '年', monthSuffix: '月'),
-              style: TextStyle(fontSize: 20, color: Color(0xd9000000))),
+              style: const TextStyle(fontSize: 20, color: Color(0xd9000000))),
           onNext == null
               ? Container()
               : IconButton(
-                  icon: Icon(Icons.chevron_right, color: Color(0x73000000)),
+                  icon: const Icon(Icons.chevron_right, color: Color(0x73000000)),
                   onPressed: onNext),
         ],
       ),
@@ -82,7 +82,7 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
         child: onClear == null
             ? Container()
             : IconButton(
-                icon: Icon(Icons.delete_forever),
+                icon: const Icon(Icons.delete_forever),
                 onPressed: onClear,
                 color: Colors.red))
   ]);
@@ -92,18 +92,18 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
 Widget defaultBuildYearHead(BuildContext context, int year,
     {VoidCallback? onLast, VoidCallback? onNext}) {
   return Container(
-    padding: EdgeInsets.all(10),
+    padding: const EdgeInsets.all(10),
     alignment: Alignment.center,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         onLast == null
             ? Container()
-            : IconButton(icon: Icon(Icons.chevron_left), onPressed: onLast),
-        Text("$year", style: TextStyle(fontSize: 20)),
+            : IconButton(icon: const Icon(Icons.chevron_left), onPressed: onLast),
+        Text("$year", style: const TextStyle(fontSize: 20)),
         onNext == null
             ? Container()
-            : IconButton(icon: Icon(Icons.chevron_right), onPressed: onNext),
+            : IconButton(icon: const Icon(Icons.chevron_right), onPressed: onNext),
       ],
     ),
   );
@@ -140,34 +140,34 @@ Widget defaultBuildDayItem<T>(BuildContext context, DateDay dayTime,
     BuildMark<T>? buildMark,
     OnDaySelected<T>? onDaySelected,
     CalendarLocaleType localeType = CalendarLocaleType.zh}) {
-  Color _sideColor = Colors.transparent;
+  Color sideColor = Colors.transparent;
   BorderRadiusGeometry borderRadius = BorderRadius.zero;
-  Color _dayColor = Colors.transparent;
-  TextStyle _style;
+  Color dayColor = Colors.transparent;
+  TextStyle style;
   if (!enableSelect) {
-    _style = TextStyle(
+    style = TextStyle(
         fontSize: 18,
         color: dayTime.weekday > 5
             ? weekendColor.withAlpha(65)
             : weekColor.withAlpha(80));
   } else {
-    _style = TextStyle(
+    style = TextStyle(
         fontSize: 18, color: dayTime.weekday > 5 ? weekendColor : weekColor);
   }
   if (isSelected) {
-    _dayColor = Color(0xff487cff);
+    dayColor = const Color(0xff487cff);
     borderRadius = BorderRadius.circular(5);
-    _style = _style.copyWith(color: Colors.white);
+    style = style.copyWith(color: Colors.white);
   }
   if (isMultiple) {
     borderRadius = BorderRadius.circular(5);
-    _sideColor = Colors.deepOrange;
+    sideColor = Colors.deepOrange;
   }
   if (isContinuous) {
-    _dayColor = Color(0x99c9d8ff);
+    dayColor = const Color(0x99c9d8ff);
     if (end) {
-      _dayColor = Color(0xd9487cff);
-      _style = _style.copyWith(color: Colors.white);
+      dayColor = const Color(0xd9487cff);
+      style = style.copyWith(color: Colors.white);
     }
     borderRadius = BorderRadius.only(
       topLeft: Radius.circular(first ? 5 : 0),
@@ -175,11 +175,11 @@ Widget defaultBuildDayItem<T>(BuildContext context, DateDay dayTime,
       topRight: Radius.circular(end ? 5 : 0),
       bottomRight: Radius.circular(end ? 5 : 0),
     );
-    _sideColor = Color(0xc9c9d8ff);
+    sideColor = const Color(0xc9c9d8ff);
   }
 
   List<Widget> items = [
-    Center(child: Text("${dayTime.day}${hasMark ? '' : ''}", style: _style))
+    Center(child: Text("${dayTime.day}${hasMark ? '' : ''}", style: style))
   ];
   if (dayTime.isToday()) {
     items.add(Positioned(
@@ -187,12 +187,12 @@ Widget defaultBuildDayItem<T>(BuildContext context, DateDay dayTime,
       right: 2,
       child: Material(
         color: Colors.transparent,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             side: BorderSide(width: 0.3, color: Colors.pinkAccent)),
         child: Padding(
-          padding: EdgeInsets.all(1),
+          padding: const EdgeInsets.all(1),
           child: Text(i18nObjInLocal(localeType)['today'],
-              style: _style.copyWith(fontSize: 10, color: Colors.pinkAccent)),
+              style: style.copyWith(fontSize: 10, color: Colors.pinkAccent)),
         ),
       ),
     ));
@@ -207,12 +207,12 @@ Widget defaultBuildDayItem<T>(BuildContext context, DateDay dayTime,
     padding: EdgeInsets.only(
         top: 9, bottom: 9, left: isMultiple ? 3 : 0, right: isMultiple ? 3 : 0),
     child: Material(
-      color: _dayColor,
+      color: dayColor,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius,
         side: BorderSide(
           width: 0.5,
-          color: _sideColor,
+          color: sideColor,
         ),
       ),
       child: Ink(
@@ -222,7 +222,7 @@ Widget defaultBuildDayItem<T>(BuildContext context, DateDay dayTime,
               onDaySelected(dayTime, markData, enableSelect);
             }
           },
-          child: Container(
+          child: SizedBox(
             height: height - 18,
             width: width - (isMultiple ? 6 : 0),
             child: Stack(children: items),
