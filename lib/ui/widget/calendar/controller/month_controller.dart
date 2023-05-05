@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../model/month_option.dart';
 import '../mini_calendar.dart';
 
 const double SPACING = 0.0;
@@ -12,10 +11,11 @@ const double RUN_SPACING = 0.0;
 /// Create by JsonYe<597232387@qq.com> on 2019/12
 ///
 class MonthController<T> {
-  StreamController<MonthOption<T>> _monthController =
+  final StreamController<MonthOption<T>> _monthController =
       StreamController.broadcast();
 
   Stream<MonthOption<T>>? monthStream() => _monthController.stream;
+
   late MonthOption<T> _option;
   get option => _option;
 

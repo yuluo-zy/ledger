@@ -92,7 +92,7 @@ class MonthWidget<T> extends StatelessWidget {
 
   const MonthWidget({
     Key? key,
-    this.padding = EdgeInsets.zero,
+    this.padding = const EdgeInsets.all(16.0),
     this.color = Colors.transparent,
     this.width,
     this.buildMark,
@@ -117,46 +117,46 @@ class MonthWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MonthController<T> _monthController =
+    MonthController<T> monthController =
         controller ?? MonthController<T>.init()
           ..reLoad();
-    DateMonth _currentMonth = _monthController.option?.currentMonth;
+    DateMonth currentMonth = monthController.option?.currentMonth;
     return StreamBuilder<MonthOption<T>>(
-        stream: _monthController.monthStream(),
-        initialData: _monthController.option,
+        stream: monthController.monthStream(),
+        initialData: monthController.option,
         builder:
             (BuildContext context, AsyncSnapshot<MonthOption<T>> snapshot) {
-          MonthOption<T>? _option = snapshot.data;
-          if (_option == null) return Container();
-          int _startWeek = _currentMonth.monthFirstDay.weekday;
-          int _headSize = (7 + _startWeek - _option.firstWeek) % 7;
-          int _endSize = 7 - (_headSize + _currentMonth.maxDays) % 7;
-          _endSize = _endSize == 7 ? 0 : _endSize;
-          int _hSize =
-              ((_headSize + _currentMonth.maxDays + _endSize) / 7.0).floor();
+          MonthOption<T>? option = snapshot.data;
+          if (option == null) return Container();
+          int startWeek = currentMonth.monthFirstDay.weekday;
+          int headSize = (7 + startWeek - option.firstWeek) % 7;
+          int endSize = 7 - (headSize + currentMonth.maxDays) % 7;
+          endSize = endSize == 7 ? 0 : endSize;
+          int hSize =
+              ((headSize + currentMonth.maxDays + endSize) / 7.0).floor();
 
           double _width = width ?? MediaQuery.of(context).size.width;
           double _height = height ?? _width * 5.5 / 7.0;
           double _dayWidth =
               ((_width - padding.left - padding.right - 1.0) / 7.0);
           double _dayHeight =
-              ((_height - padding.top - padding.bottom - 1.0) / _hSize);
+              ((_height - padding.top - padding.bottom - 1.0) / hSize);
 
-          List<DateDay> _days = [];
+          List<DateDay> days = [];
 
-          List.generate(_headSize, (index) {
-            _days.add(DateDay(_currentMonth.monthFirstDay.year,
-                    _currentMonth.monthFirstDay.month, 1)
-                .subtract(Duration(days: _headSize - index)));
+          List.generate(headSize, (index) {
+            days.add(DateDay(currentMonth.monthFirstDay.year,
+                    currentMonth.monthFirstDay.month, 1)
+                .subtract(Duration(days: headSize - index)));
           });
-          List.generate(_currentMonth.maxDays, (index) {
-            _days.add(DateDay(_currentMonth.monthFirstDay.year,
-                    _currentMonth.monthFirstDay.month, 1)
+          List.generate(currentMonth.maxDays, (index) {
+            days.add(DateDay(currentMonth.monthFirstDay.year,
+                    currentMonth.monthFirstDay.month, 1)
                 .add(Duration(days: index)));
           });
-          List.generate(_endSize, (index) {
-            _days.add(DateDay(_currentMonth.monthEndDay.year,
-                    _currentMonth.monthEndDay.month, _currentMonth.maxDays)
+          List.generate(endSize, (index) {
+            days.add(DateDay(currentMonth.monthEndDay.year,
+                    currentMonth.monthEndDay.month, currentMonth.maxDays)
                 .add(Duration(days: index + 1)));
           });
 
@@ -169,8 +169,8 @@ class MonthWidget<T> extends StatelessWidget {
                   left: padding.left, right: padding.right, top: 5, bottom: 5),
               child: buildMonthHead != null
                   ? buildMonthHead!(
-                      context, _width, double.infinity, _currentMonth)
-                  : defaultBuildMonthHead(context, _currentMonth),
+                      context, _width, double.infinity, currentMonth)
+                  : defaultBuildMonthHead(context, currentMonth),
             ));
           }
           if (showWeekHead) {
@@ -183,7 +183,7 @@ class MonthWidget<T> extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: List.generate(7, (index) {
-                  int week = (_option.firstWeek + index) % 7;
+                  int week = (option.firstWeek + index) % 7;
                   return Container(
                     alignment: Alignment.center,
                     child: buildWeekHead != null
@@ -210,22 +210,22 @@ class MonthWidget<T> extends StatelessWidget {
                       child: showBackground
                           ? (buildMonthBackground != null
                               ? buildMonthBackground!(
-                                  context, _width, _height, _currentMonth)
+                                  context, _width, _height, currentMonth)
                               : defaultBuildMonthBackground(
-                                  context, _currentMonth))
+                                  context, currentMonth))
                           : Container(),
                     ),
-                    Container(
+                    SizedBox(
                       width: _width,
                       height: _height,
                       child: Wrap(
                           spacing: 0,
                           runSpacing: 0,
-                          children: _days.map((_time) {
+                          children: days.map((_time) {
                             bool enableSelect =
-                                _option.enableDay(_time, _currentMonth);
-                            bool isContinuous = _option.inContinuousDay(_time);
-                            bool isMultiple = _option.inMultipleDay(_time);
+                                option.enableDay(_time, currentMonth);
+                            bool isContinuous = option.inContinuousDay(_time);
+                            bool isMultiple = option.inMultipleDay(_time);
                             return buildDayItem == null
                                 ? defaultBuildDayItem<T>(
                                     context,
@@ -236,17 +236,17 @@ class MonthWidget<T> extends StatelessWidget {
                                     height: _dayHeight,
                                     width: _dayWidth,
                                     first: isContinuous &&
-                                        _time == _option.firstSelectDay,
+                                        _time == option.firstSelectDay,
                                     end: isContinuous &&
-                                        (_option.secondSelectDay == null ||
-                                            _time == _option.secondSelectDay),
-                                    hasMark: _option.marks.containsKey(_time),
-                                    markData: _option.marks[_time],
+                                        (option.secondSelectDay == null ||
+                                            _time == option.secondSelectDay),
+                                    hasMark: option.marks.containsKey(_time),
+                                    markData: option.marks[_time],
                                     buildMark: buildMark,
                                     onDaySelected: (day, data, enable) =>
-                                        _onDaySelected(day, data, _option,
-                                            _monthController, enable),
-                                    isSelected: _option.currentDay == _time,
+                                        _onDaySelected(day, data, option,
+                                            monthController, enable),
+                                    isSelected: option.currentDay == _time,
                                     isMultiple: isMultiple,
                                     isContinuous: isContinuous,
                                     localeType: localeType,
@@ -259,13 +259,13 @@ class MonthWidget<T> extends StatelessWidget {
                                     enableSelect: enableSelect,
                                     height: _dayHeight,
                                     width: _dayWidth,
-                                    hasMark: _option.marks.containsKey(_time),
-                                    markData: _option.marks[_time],
+                                    hasMark: option.marks.containsKey(_time),
+                                    markData: option.marks[_time],
                                     buildMark: buildMark,
                                     onDaySelected: (day, data, enable) =>
-                                        _onDaySelected(day, data, _option,
-                                            _monthController, enable),
-                                    isSelected: _option.currentDay == _time,
+                                        _onDaySelected(day, data, option,
+                                            monthController, enable),
+                                    isSelected: option.currentDay == _time,
                                     isContinuous: isContinuous,
                                   );
                           }).toList()),
@@ -287,14 +287,15 @@ class MonthWidget<T> extends StatelessWidget {
     if (option.enableMultiple) {
       if (onMultipleSelectListen != null) {
         bool selected = option.inMultipleDay(day);
-        if (selected)
+        if (selected) {
           monthController
             ..remove(day)
             ..reLoad();
-        else
+        } else {
           monthController
             ..add(day)
             ..reLoad();
+        }
         onMultipleSelectListen!(option.multipleDays);
       }
     } else if (option.enableContinuous) {
